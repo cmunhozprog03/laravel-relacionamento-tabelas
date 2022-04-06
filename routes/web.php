@@ -1,17 +1,35 @@
 <?php
 
+use App\Models\{
+    Preference,
+    User
+};
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+
+Route::get('/one-to-one', function(){
+    $user = User::with('preference')->find(2);
+
+    $data = [
+        'background_color' => '#fcfcfc'
+    ];
+
+    if($user->Preference){
+        $user->Preference->update($data);
+    }else {
+        $user->Preference()->create($data);
+    }
+
+    $user->refresh();
+
+   var_dump($user->Preference);
+
+    $user->preference->delete();
+
+    $user->refresh();
+
+    dd($user->Preference);
+});
 
 Route::get('/', function () {
     return view('welcome');
