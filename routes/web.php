@@ -1,12 +1,63 @@
 <?php
 
 use App\Models\{
+    Comment,
     Course,
+    Image,
     Permission,
     Preference,
+    Tag,
     User
 };
 use Illuminate\Support\Facades\Route;
+
+route::get('/many-to-many-polymorphyc', function(){
+    //$course = Course::first();
+
+    // Tag::create(['name' => 'tag1', 'color' => 'blue']);
+    // Tag::create(['name' => 'tag2', 'color' => 'red']);
+    // Tag::create(['name' => 'tag3', 'color' => 'green']);
+
+    //$course->tags()->attach([2]);
+
+    //dd($course->tags);
+
+    $tag = Tag::find(2);
+    dd($tag->courses);
+});
+
+Route::get('/one-to-many-polymorphyc', function(){
+    //$course = Course::first();
+
+    // $course->comments()->create([
+    //     'subject' => 'Novo Comentário 2',
+    //     'content' => 'Apenas (2) um comentário legal.'
+    // ]);
+
+    //dd($course->comments);
+
+    $comment = Comment::find(1);
+    dd($comment->commentable);
+});
+
+Route::get('/one-to-one-polymorphyc', function(){
+    $user = User::find(1);
+
+    $data = ['path' => 'nome-imagem2.png'];
+
+    $user->image->delete();
+
+    if ($user->image) {
+        $user->image->update($data);
+    } else {
+        //
+        $user->image()->create($data);
+    }
+
+
+
+    dd($user->image);
+});
 
 Route::get('/many-to-many-pivot', function(){
     $user = User::with('permissions')->find(1);

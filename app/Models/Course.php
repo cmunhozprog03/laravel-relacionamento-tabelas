@@ -16,6 +16,20 @@ class Course extends Model
         return $this->hasMany(Module::class);
     }
 
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
     // Inverse
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
 
 }
